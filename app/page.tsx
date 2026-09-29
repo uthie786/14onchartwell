@@ -25,9 +25,9 @@ import {
 /* ------------------------------------------------------------------ */
 /*  Venue details — confirm these before going live                    */
 /* ------------------------------------------------------------------ */
-const WHATSAPP_NUMBER = "27000000000"; // international format, no "+" or spaces
-const PHONE_DISPLAY = "+27 00 000 0000";
-const PHONE_HREF = "tel:+27000000000";
+const WHATSAPP_NUMBER = "27315611017"; // international format, no "+" or spaces
+const PHONE_DISPLAY = "+27 31 561 1017";
+const PHONE_HREF = "tel:+27315611017";
 const ADDRESS_LINE_1 = "14 Chartwell Drive";
 const ADDRESS_LINE_2 = "Umhlanga Rocks, KwaZulu-Natal";
 const MAPS_URL =
