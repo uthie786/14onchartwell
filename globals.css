@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* Brand tokens: generates bg-wine, text-gold, border-parchment/40, font-serif, etc. */
+@theme inline {
+  --color-wine: #7A1C1C;
+  --color-wine-deep: #2A0C0C;
+  --color-gold: #D4AF37;
+  --color-forest: #1C3A27;
+  --color-forest-deep: #0F1F15;
+  --color-parchment: #F5F2EB;
+  --color-ink: #140C0B;
+
+  /* Font variables come from next/font in layout.tsx */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-jost), "Jost", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-ink);
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
