@@ -509,17 +509,17 @@ function OnyxBar() {
   return (
     <section aria-label="The onyx bar" className="relative z-10 overflow-hidden px-5 py-28">
       <SectionGlow />
-      <div className="relative mx-auto grid max-w-5xl gap-8 md:grid-cols-2 md:items-start">
-        <div>
-          <Wine className="mb-4 h-6 w-6 text-gold" aria-hidden />
-          <h2 className="font-serif text-4xl leading-tight text-parchment md:text-5xl">
-            Lit from within, poured with care.
-          </h2>
-        </div>
-        <p className="text-lg leading-relaxed text-parchment/70 md:pt-10">
+      <div className="relative mx-auto max-w-5xl">
+        <Wine className="mx-auto mb-6 h-6 w-6 text-gold" aria-hidden />
+        <div className="grid gap-8 md:grid-cols-2 md:items-start">
+        <h2 className="font-serif text-4xl leading-tight text-parchment md:text-5xl">
+          Lit from within, poured with care.
+        </h2>
+        <p className="text-lg leading-relaxed text-parchment/70 md:pt-2">
           The backlit onyx bar is the heart of the room. Come early for a glass of red before
           dinner, or stay late once the kitchen has sent out its last plate.
         </p>
+        </div>
       </div>
     </section>
   );
