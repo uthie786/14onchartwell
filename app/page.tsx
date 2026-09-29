@@ -314,8 +314,6 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-ink font-sans text-parchment antialiased selection:bg-gold/40 selection:text-ink">
-      <AmbientGlow />
-
       {/* Top bar */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-gold/15 bg-ink/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
@@ -340,8 +338,9 @@ export default function Page() {
       <OnyxBar />
 
       {/* Menu */}
-      <section id="menu" className="relative scroll-mt-16 bg-forest-deep px-5 py-24">
-        <div className="mx-auto max-w-4xl">
+      <section id="menu" className="relative z-10 scroll-mt-16 overflow-clip bg-forest-deep px-5 py-24">
+        <SectionGlow className="top-0 h-[640px]" />
+        <div className="relative mx-auto max-w-4xl">
           <div className="mb-10 flex flex-col gap-3 text-center">
             <Utensils className="mx-auto h-6 w-6 text-gold" aria-hidden />
             <h2 className="font-serif text-5xl text-parchment md:text-6xl">The menu</h2>
@@ -411,30 +410,24 @@ export default function Page() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Ambient page glow — intensifies as the guest scrolls into the bar  */
-/* ------------------------------------------------------------------ */
-function AmbientGlow() {
-  const { scrollYProgress } = useScroll();
-  const smooth = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
-  const opacity = useTransform(smooth, [0, 0.25, 0.6, 1], [0.35, 0.8, 0.45, 0.6]);
-  const y = useTransform(smooth, [0, 1], ["-10%", "40%"]);
-  return (
-    <motion.div
-      aria-hidden
-      style={{ opacity, y }}
-      className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[80vh] bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(212,175,55,0.22),rgba(122,28,28,0.12)_45%,transparent_75%)]"
-    />
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /*  Hero                                                               */
 /* ------------------------------------------------------------------ */
 function Hero({ onReserve }: { onReserve: () => void }) {
   const reduce = useReducedMotion();
   return (
     <section id="top" className="relative z-10 flex min-h-[92vh] items-center overflow-hidden px-5 pb-16 pt-28">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(122,28,28,0.45),transparent_55%),radial-gradient(circle_at_85%_20%,rgba(28,58,39,0.55),transparent_50%)]" />
+      <motion.div
+        aria-hidden
+        className="absolute -inset-[20%] bg-[radial-gradient(circle_at_29%_71%,rgba(122,28,28,0.5),transparent_45%)]"
+        animate={reduce ? undefined : { x: ["0%", "7%", "-4%", "0%"], y: ["0%", "-6%", "3%", "0%"], opacity: [0.75, 1, 0.8, 0.75] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        aria-hidden
+        className="absolute -inset-[20%] bg-[radial-gradient(circle_at_75%_29%,rgba(28,58,39,0.65),transparent_42%)]"
+        animate={reduce ? undefined : { x: ["0%", "-6%", "5%", "0%"], y: ["0%", "5%", "-4%", "0%"], opacity: [0.85, 0.65, 1, 0.85] }}
+        transition={{ duration: 21, repeat: Infinity, ease: "easeInOut" }}
+      />
       <div className="relative mx-auto grid w-full max-w-6xl items-end gap-12 md:grid-cols-[1.3fr_1fr]">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 24 }}
@@ -490,52 +483,43 @@ function Hero({ onReserve }: { onReserve: () => void }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  The backlit onyx bar — the page's one big moment                   */
+/*  Subtle gold glow that brightens as a section scrolls into view     */
 /* ------------------------------------------------------------------ */
-function OnyxBar() {
+function SectionGlow({ className = "inset-y-0" }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const p = useSpring(scrollYProgress, { stiffness: 70, damping: 22 });
-  const glow = useTransform(p, [0, 0.45, 0.55, 1], [0.1, 1, 1, 0.2]);
-  const halo = useTransform(p, [0, 0.5, 1], [0.6, 1.15, 0.8]);
-  const shimmerX = useTransform(p, [0, 1], ["-30%", "30%"]);
+  const opacity = useTransform(p, [0, 0.45, 0.55, 1], [0.1, 1, 1, 0.2]);
+  const scale = useTransform(p, [0, 0.5, 1], [0.6, 1.15, 0.8]);
 
   return (
-    <section ref={ref} aria-label="The onyx bar" className="relative z-10 overflow-hidden px-5 py-32">
+    <div ref={ref} aria-hidden className={`pointer-events-none absolute inset-x-0 ${className}`}>
       <motion.div
-        aria-hidden
-        style={{ opacity: glow, scale: halo }}
+        style={{ opacity, scale }}
         className="absolute left-1/2 top-1/2 h-[520px] w-[140%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.45),rgba(212,175,55,0.12)_40%,transparent_70%)] blur-2xl"
       />
+    </div>
+  );
+}
 
-      <div className="relative mx-auto max-w-5xl">
-        {/* the slab */}
-        <div className="relative h-40 overflow-hidden border-y border-gold/40 md:h-56">
-          <motion.div
-            aria-hidden
-            style={{ opacity: glow }}
-            className="absolute inset-0 bg-[linear-gradient(180deg,#5a3a0e_0%,#D4AF37_45%,#f3dc92_52%,#b8871f_62%,#4a2c08_100%)]"
-          />
-          <motion.div
-            aria-hidden
-            style={{ x: shimmerX, opacity: glow }}
-            className="absolute inset-[-20%] bg-[repeating-linear-gradient(115deg,transparent_0_38px,rgba(122,28,28,0.18)_38px_40px,transparent_40px_90px,rgba(255,240,200,0.25)_90px_91px)] mix-blend-multiply"
-          />
-          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,transparent_20%,rgba(20,12,11,0.55)_80%)]" />
-          <div className="relative flex h-full items-center justify-center">
-            <Wine className="h-10 w-10 text-ink/70 md:h-14 md:w-14" aria-hidden />
-          </div>
-        </div>
-
-        <div className="mt-14 grid gap-8 md:grid-cols-2 md:items-start">
+/* ------------------------------------------------------------------ */
+/*  The bar                                                            */
+/* ------------------------------------------------------------------ */
+function OnyxBar() {
+  return (
+    <section aria-label="The onyx bar" className="relative z-10 overflow-hidden px-5 py-28">
+      <SectionGlow />
+      <div className="relative mx-auto grid max-w-5xl gap-8 md:grid-cols-2 md:items-start">
+        <div>
+          <Wine className="mb-4 h-6 w-6 text-gold" aria-hidden />
           <h2 className="font-serif text-4xl leading-tight text-parchment md:text-5xl">
             Lit from within, poured with care.
           </h2>
-          <p className="text-lg leading-relaxed text-parchment/70">
-            The backlit onyx bar is the heart of the room. Come early for a glass of red before
-            dinner, or stay late once the kitchen has sent out its last plate.
-          </p>
         </div>
+        <p className="text-lg leading-relaxed text-parchment/70 md:pt-10">
+          The backlit onyx bar is the heart of the room. Come early for a glass of red before
+          dinner, or stay late once the kitchen has sent out its last plate.
+        </p>
       </div>
     </section>
   );
@@ -638,8 +622,9 @@ function MenuRow({ item }: { item: MenuItem }) {
 /* ------------------------------------------------------------------ */
 function Visit({ onReserve }: { onReserve: () => void }) {
   return (
-    <section id="visit" className="relative z-10 scroll-mt-16 bg-wine-deep px-5 py-24">
-      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
+    <section id="visit" className="relative z-10 scroll-mt-16 overflow-hidden bg-wine-deep px-5 py-24">
+      <SectionGlow />
+      <div className="relative mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
         <DoubleFrame tone="gold" className="p-7">
           <MapPin className="h-5 w-5 text-gold" aria-hidden />
           <h3 className="mt-4 font-serif text-2xl text-parchment">Find us</h3>
