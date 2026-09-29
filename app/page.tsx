@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 import {
   AnimatePresence,
   motion,
@@ -25,9 +26,9 @@ import {
 /* ------------------------------------------------------------------ */
 /*  Venue details — confirm these before going live                    */
 /* ------------------------------------------------------------------ */
-const WHATSAPP_NUMBER = "27315611017"; // international format, no "+" or spaces
-const PHONE_DISPLAY = "+27 31 561 1017";
-const PHONE_HREF = "tel:+27315611017";
+const WHATSAPP_NUMBER = "27000000000"; // international format, no "+" or spaces
+const PHONE_DISPLAY = "+27 00 000 0000";
+const PHONE_HREF = "tel:+27000000000";
 const ADDRESS_LINE_1 = "14 Chartwell Drive";
 const ADDRESS_LINE_2 = "Umhlanga Rocks, KwaZulu-Natal";
 const MAPS_URL =
@@ -317,8 +318,10 @@ export default function Page() {
       {/* Top bar */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-gold/15 bg-ink/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-          <a href="#top" className="font-serif text-xl tracking-wide text-parchment focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold">
-            14 on Chartwell
+          <a href="#top" className="flex items-center gap-3 font-serif text-xl tracking-wide text-parchment focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold">
+            <Image src="/logo-gold.png" alt="" width={335} height={341} priority className="h-9 w-auto" />
+            <span className="hidden sm:inline">14 on Chartwell</span>
+            <span className="sr-only sm:hidden">14 on Chartwell</span>
           </a>
           <nav className="flex items-center gap-2 sm:gap-6">
             <a href="#menu" className="hidden text-sm text-parchment/75 hover:text-gold sm:inline">Menu</a>
@@ -397,8 +400,8 @@ export default function Page() {
       <Visit onReserve={() => setBookingOpen(true)} />
 
       <footer className="border-t border-gold/15 bg-ink px-5 py-10 text-center">
-        <p className="font-serif text-2xl text-parchment">Fourteen on Chartwell</p>
-        <p className="mt-2 text-sm text-parchment/50">
+        <Image src="/logo-cream.png" alt="Fourteen on Chartwell" width={335} height={341} className="mx-auto h-32 w-auto" />
+        <p className="mt-6 text-sm text-parchment/50">
           {ADDRESS_LINE_1}, {ADDRESS_LINE_2}
         </p>
         <p className="mt-6 text-xs text-parchment/35">© {new Date().getFullYear()} 14 on Chartwell</p>
